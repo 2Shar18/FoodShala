@@ -2,6 +2,8 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
 }
+
+/* Navigation Bar */
 .navbar {
   overflow: hidden;
   position: fixed;
@@ -11,6 +13,7 @@ body {
   z-index: 1;
 }
 
+/*Cart icon*/
 .ping {
   height: 18px;
   width: 18px;
@@ -45,6 +48,7 @@ body {
   display: none;
 }
 
+/*Login & Registration Switch*/
 .tab-switch {
   overflow: hidden;
   border: 1px solid #ccc;
@@ -69,7 +73,6 @@ body {
 .tab-switch .sel {
   background-color: #ccc;
   border-bottom: 3px solid #4CAF50;
-  /*box-shadow: 0 0 2px grey;*/
 }
 
 .tab-content {
@@ -80,6 +83,7 @@ body {
   from {opacity: 0;}
   to {opacity: 1;}
 }
+
 .quantity {
   width: 15%;
   padding: 15px 5px;
@@ -88,6 +92,7 @@ body {
   display: inline-block;
 }
 
+/* Form Styles */
 .addbtn, .canbtn {
   display: inline-block;
   width: auto;
@@ -142,9 +147,9 @@ button:hover, .view-menu:hover {
   width: 50%;
 }
 
+/* Modal Container */
 .container {
   padding: 16px 5%;
-  /*padding: 16px;*/
 }
 
 .modal {
@@ -193,16 +198,16 @@ hr {
   display: table;
 }
 
+/* Adjusting for NavBar */
 main {
   padding: 0 1%;
   margin-top: 50px;
 }
 
-
+/* Card List and items */
 .restaurant-list {
   margin: 0 12%;
 }
-
 
 .restaurant-item {
   border: 2px solid #CCC;
@@ -210,7 +215,6 @@ main {
   border-radius: 15px;
   padding: 5px 20px;
   margin: 15px 5px;
-  /*float: right;*/
   display: inline-block;
   width: 25%;
 }
@@ -258,6 +262,7 @@ main {
 .non-veg {
   background-color: red;
 }
+
 .r-address::before {
   content: "Location: ";
   font-weight: bold;
@@ -361,6 +366,7 @@ main {
   margin-left: 10px;
 }
 
+/* SlideShow */
 .carousel__viewport, .carousel__viewport li {
   list-style: none;
   margin: 0;
@@ -378,6 +384,7 @@ img {
   filter: drop-shadow(0 0 10px #0003);
   perspective: 100px;
 }
+
 .carousel *::-webkit-scrollbar {
   width: 0;
 }
@@ -414,7 +421,6 @@ img {
   width: 100%;
   text-align: center;
   color: white;
-  /*counter-increment: item;*/
 }
 
 .centered {
@@ -429,7 +435,6 @@ img {
 }
 
 .carousel__slide:before {
-  /*content: counter(item);*/
   position: absolute;
   top: 50%;
   left: 50%;
@@ -589,6 +594,7 @@ img {
   }
 }
 
+/* Responsiveness */
 @media screen and (max-width: 950px) {
   .modal-content {
     width: 80%;
@@ -628,7 +634,6 @@ img {
     display: block;
   }
 
-  /*.navbar.responsive {position: relative;}*/
   .navbar.responsive .icon {
     position: absolute;
     right: 0;

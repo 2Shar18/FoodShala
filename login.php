@@ -7,11 +7,13 @@
 
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$type = $_POST['type'];
+		// Secret Page
 		if ($_POST['username'] == 'internshala' && $_POST['psw'] == '123') {
 			$_SESSION['usr'] = $_POST['username'];
 			header('location: ./internshala.php');
 			exit();
 		}
+		// Restaurant Login
 		if ($type == "restaurant") {
 			echo "restaurant";
 			$username = $_POST['username'];
@@ -38,6 +40,7 @@
 				header('location: ./?error=no-create1&form=login&type=r_content_l');
 			}
 		}
+		// Customer Login
 		else if ($type == "customer") {
 			$username = $_POST['username'];
 			$password = $_POST['psw'];

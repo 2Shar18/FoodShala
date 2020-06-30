@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	require '../resource/config.php';
+	// Allowing only authorized restaurants
 	if (!isset($_SESSION['username'])) {
 		header('location: ../');
 		exit();
@@ -23,27 +24,21 @@
 </head>
 </head>
 <body>
-	<header>
-		<div class="navbar">
-			<a href="../">Home</a>
-				<?php 
-				$stmt = $conn->prepare("SELECT * FROM restaurant WHERE username = ?");
-				$stmt->bind_param("s", $username);
-				if($stmt->execute()) {
-					$result = $stmt->get_result();
-					$row = $result->fetch_assoc();
-				}
-				else {
-					header('location: ../');
-				}
-					
-			?>
-			<a href="../menu.php?id=<?php echo $row['id']; ?>">Menu</a>
-			<a href='../order.php'>View Orders</a>
-			<a href='../logout.php' style='float: right;'>Logout</a>
-			<a href='./' style='float: right;' class='active'>Profile</a>
-		</div>
-	</header>
+	<a href="../">Home</a>
+	<?php 
+		$stmt = $conn->prepare("SELECT * FROM restaurant WHERE username = ?");
+		$stmt->bind_param("s", $username);
+		if($stmt->execute()) {
+			$result = $stmt->get_result();
+			$row = $result->fetch_assoc();
+		}
+		else {
+			header('location: ../');
+		}
+			
+	?>
+	<!-- Adding Navbar -->
+	<?php $page='profile'; require '../template/nav.php'; ?>
 	<main>
 		<h1><?php
 			echo "Welcome ".$name;
@@ -51,6 +46,7 @@
 		<div class="profile" id="details" style="display: block;">
 			<br>
 			<h3>Here are your details</h3>
+			<!-- Editing Details -->
 			<button style="width: auto;" onclick="editDetails(this)">Edit details</button>
 			<form method="post" action="../edit.php" class="form-input">
 				<input type="hidden" name="type" value="restaurant">

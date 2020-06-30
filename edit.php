@@ -7,6 +7,7 @@
 
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$type = $_POST['type'];
+		// Edit request of Restaurant
 		if ($type == "restaurant") {
 			$id = $_POST['id'];
 			$name = $_POST['name'];
@@ -36,6 +37,7 @@
 				header('location: ./?error=no-create');
 			}
 		}
+		// Edit request of customer
 		else if ($type == "customer") {
 			$id = $_POST['id'];
 			$name = $_POST['name'];

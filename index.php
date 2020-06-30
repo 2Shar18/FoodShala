@@ -11,88 +11,72 @@
 </head>
 </head>
 <body>
-	<!-- <div style="margin-top: 5px;"></div> -->
+	<!-- SlideShow -->
 	<section class="carousel" aria-label="Gallery">
-			<ol class="carousel__viewport">
-				<li id="carousel__slide1"
-						tabindex="0"
-						class="carousel__slide">
-						<img src="resource/food_1.jpg">
-						<div class="centered">Easy Access</div>
-					<div class="carousel__snapper">
-						<a href="#carousel__slide4"
-							 class="carousel__prev">Go to last slide</a>
-						<a href="#carousel__slide2"
-							 class="carousel__next">Go to next slide</a>
-					</div>
+		<ol class="carousel__viewport">
+			<li id="carousel__slide1" tabindex="0" class="carousel__slide">
+				<img src="resource/food_1.jpg">
+				<div class="centered">Easy Access</div>
+				<div class="carousel__snapper">
+					<a href="#carousel__slide4" class="carousel__prev">Go to last slide</a>
+					<a href="#carousel__slide2" class="carousel__next">Go to next slide</a>
+				</div>
+			</li>
+			<li id="carousel__slide2" tabindex="0" class="carousel__slide">	
+				<img src="resource/food_2.jpg">
+				<div class="centered">Fast Delivery</div>
+				<div class="carousel__snapper">
+					<a href="#carousel__slide1" class="carousel__prev">Go to previous slide</a>
+					<a href="#carousel__slide3" class="carousel__next">Go to next slide</a>
+				</div>
+			</li>
+			<li id="carousel__slide3" tabindex="0" class="carousel__slide">
+				<img src="resource/food_3.jpg">
+				<div class="centered">Treat Yourself</div>
+				<div class="carousel__snapper">
+					<a href="#carousel__slide2" class="carousel__prev">Go to previous slide</a>
+					<a href="#carousel__slide4" class="carousel__next">Go to next slide</a>
+				</div>
+			</li>
+			<li id="carousel__slide4" tabindex="0" class="carousel__slide">
+				<img src="resource/food_4.jpg">
+				<div class="centered">Fulfil your craving</div>
+				<div class="carousel__snapper">
+					<a href="#carousel__slide3" class="carousel__prev">Go to previous slide</a>
+					<a href="#carousel__slide1" class="carousel__next">Go to first slide</a>
+				</div>
+			</li>
+		</ol>
+		<aside class="carousel__navigation">
+			<ol class="carousel__navigation-list">
+				<li class="carousel__navigation-item">
+					<a href="#carousel__slide1" class="carousel__navigation-button">Go to slide 1</a>
 				</li>
-				<li id="carousel__slide2"
-						tabindex="0"
-						class="carousel__slide">	
-						<img src="resource/food_2.jpg">
-						<div class="centered">Fast Delivery</div>
-					<div class="carousel__snapper">
-						<a href="#carousel__slide1"
-							 class="carousel__prev">Go to previous slide</a>
-						<a href="#carousel__slide3"
-							 class="carousel__next">Go to next slide</a>
-					</div>
+				<li class="carousel__navigation-item">
+					<a href="#carousel__slide2" class="carousel__navigation-button">Go to slide 2</a>
 				</li>
-				<li id="carousel__slide3"
-						tabindex="0"
-						class="carousel__slide">
-						<img src="resource/food_3.jpg">
-						<div class="centered">Treat Yourself</div>
-					<div class="carousel__snapper">
-						<a href="#carousel__slide2"
-							 class="carousel__prev">Go to previous slide</a>
-						<a href="#carousel__slide4"
-							 class="carousel__next">Go to next slide</a>
-					</div>
+				<li class="carousel__navigation-item">
+					<a href="#carousel__slide3" class="carousel__navigation-button">Go to slide 3</a>
 				</li>
-				<li id="carousel__slide4"
-						tabindex="0"
-						class="carousel__slide">
-						<img src="resource/food_4.jpg">
-						<div class="centered">Fulfil your craving</div>
-					<div class="carousel__snapper">
-						<a href="#carousel__slide3"
-							 class="carousel__prev">Go to previous slide</a>
-						<a href="#carousel__slide1"
-							 class="carousel__next">Go to first slide</a>
-					</div>
+				<li class="carousel__navigation-item">
+					<a href="#carousel__slide4" class="carousel__navigation-button">Go to slide 4</a>
 				</li>
 			</ol>
-			<aside class="carousel__navigation">
-				<ol class="carousel__navigation-list">
-					<li class="carousel__navigation-item">
-						<a href="#carousel__slide1"
-							 class="carousel__navigation-button">Go to slide 1</a>
-					</li>
-					<li class="carousel__navigation-item">
-						<a href="#carousel__slide2"
-							 class="carousel__navigation-button">Go to slide 2</a>
-					</li>
-					<li class="carousel__navigation-item">
-						<a href="#carousel__slide3"
-							 class="carousel__navigation-button">Go to slide 3</a>
-					</li>
-					<li class="carousel__navigation-item">
-						<a href="#carousel__slide4"
-							 class="carousel__navigation-button">Go to slide 4</a>
-					</li>
-				</ol>
-			</aside>
-		</section>
+		</aside>
+	</section>
+	<!-- Adding Navbar -->
 	<?php $page='home'; require './template/nav.php'; ?>
+	<!-- Main Page -->
 	<main>
 		<h3>Showing nearby restaurants</h3>
+		<!-- List of Restaurants -->
 		<div class="restaurant-list">
 			<?php
 			$stmt = "SELECT * FROM restaurant";
 			$result = $conn->query($stmt);
 			while($row = $result->fetch_assoc()) {
 			?>
+			<!-- Div for individual Items -->
 			<div class="restaurant-item">
 				<p class="r-name"><?php echo "<a href='./menu.php?id=".$row['id']."'>".$row['name']."</a>"; ?></p>
 				<p class="r-address"><?php echo $row['address']; ?></p>

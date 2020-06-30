@@ -11,10 +11,12 @@
 </head>
 </head>
 <body>
+	<!-- Adding Navbar -->
 	<?php $page='order'; require './template/nav.php'; ?>
 	<main>
 		<h3>Showing Orders</h3>
 		<?php
+			// Order list for customer
 			if ($_SESSION['type'] == 'customer') {
 				$stmt = $conn->prepare('SELECT ol.id as id, r.name as restaurant_name, ol.date, ol.quantity, ol.final_cost, ol.comments FROM orderlist ol, restaurant r, customer c WHERE c.username = ? AND c.id = ol.customer_id AND ol.restaurant_id = r.id ORDER BY ol.id DESC;');
 				$stmt->bind_param('s', $_SESSION['username']);
@@ -27,6 +29,7 @@
 					echo "<div class='restaurant-list'>";
 					while ($row = $result->fetch_assoc()) {
 		?>
+		<!-- Individual Orders -->
 		<div class="order-item">
 			<table width="100%" style="text-align: center;">
 			<tr>
@@ -49,6 +52,7 @@
 			</table>
 			
 		</div>
+		<!-- List of Order items in each order -->
 		<div id="<?php echo $row['id']; ?>" class="modal">
 		<span onclick="closeDetail(<?php echo $row['id'];?>)" class="close" title="Close Modal">&times;</span>
 			<div class="modal-content">
@@ -90,6 +94,7 @@
 					echo "</div>";
 				}
 			}
+			// Order list for restaurant
 			else if ($_SESSION['type'] == 'restaurant') {
 				$stmt = $conn->prepare('SELECT ol.id as id, c.name as customer_name, ol.date, ol.quantity, ol.final_cost, ol.comments FROM orderlist ol, restaurant r, customer c WHERE r.username = ? AND r.id = ol.restaurant_id AND ol.customer_id = c.id ORDER BY ol.id DESC;');
 				$stmt->bind_param('s', $_SESSION['username']);
@@ -102,6 +107,7 @@
 					echo "<div class='restaurant-list'>";
 					while ($row = $result->fetch_assoc()) {
 		?>
+		<!-- Individual Orders -->
 		<div class="order-item">
 			<table width="100%" style="text-align: center;">
 			<tr>
@@ -124,6 +130,7 @@
 			</table>
 			
 		</div>
+		<!-- List of Order items in each order -->
 		<div id="<?php echo $row['id']; ?>" class="modal">
 		<span onclick="closeDetail(<?php echo $row['id'];?>)" class="close" title="Close Modal">&times;</span>
 			<div class="modal-content">

@@ -2,25 +2,7 @@
 	session_start();
 	require '../resource/config.php';
 
-	// if (isset($_GET['id'])) {
-	// 	$id = $_GET['id'];
-	// 	$stmt = $conn->prepare("SELECT * FROM customer WHERE id = ?") or trigger_error($conn->error, E_USER_ERROR);
-	// 	$stmt->bind_param("i", $id);
-	// 	$stmt->execute() or trigger_error($conn->error, E_USER_ERROR);
-	// 	$result = $stmt->get_result();
-	// 	if ($result->num_rows > 0){
-	// 		$row = $result->fetch_assoc();
-	// 		$username = $row['username'];
-	// 		$name = $row['name'];
-	// 		$self = 0;
-	// 		if (isset($_SESSION['username']) && $_SESSION['username'] == $username && $_SESSION['type'] == 'customer')
-	// 			$self = 1;
-	// 	}
-	// 	else {
-	// 		header('location: ../');
-	// 	}
-	// }
-	// else {
+	// Allowing only authorized customers
 	if (!isset($_SESSION['username'])) {
 		header('location: ../');
 		exit();
@@ -34,7 +16,6 @@
 		header('location: ../restaurant/');
 		exit();	
 	}
-	// }
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,6 +26,7 @@
 </head>
 </head>
 <body>
+	<!-- Adding Navbar -->
 	<?php $page='profile'; require '../template/nav.php'; ?>
 	<main>
 		<h1><?php
@@ -66,6 +48,7 @@
 				}
 					
 			?>
+			<!-- Edit details -->
 			<form method="post" action="../edit.php" class="form-input">
 				<input type="hidden" name="type" value="customer">
 				<input type="hidden" name="id" value="<?php echo $row['id'];?>">

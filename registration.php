@@ -7,6 +7,7 @@
 
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$type = $_POST['type'];
+		// Restaurant Registration
 		if ($type == "restaurant") {
 			$username = $_POST['username'];
 			$name = $_POST['name'];
@@ -39,6 +40,7 @@
 				header('location: ./?error=no-create&form=register&type=r_content');
 			}
 		}
+		// Customer Registration
 		else if ($type == "customer") {
 			$username = $_POST['username'];
 			$name = $_POST['name'];

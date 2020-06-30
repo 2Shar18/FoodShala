@@ -14,56 +14,58 @@
 </head>
 </head>
 <body>
+	<!-- Adding Navbar -->
 	<?php $page='cart'; require './template/nav.php'; ?>
 	<main>
 		<h3>Showing entries of your cart</h3>
-				<?php 
-				$stmt = $conn->prepare("SELECT c.id as id, c.menuitem_id as menuitem_id, c.quantity as quantity, c.final_cost as final_cost, m.name as menuitem_name, m.description as description, m.isVeg as isVeg, m.gst as gst, r.name as restaurant_name, r.id as restaurant_id, m.cost as cost FROM cart c, menuitem m, restaurant r, customer cu WHERE cu.username = ? AND cu.id = c.customer_id AND c.menuitem_id = m.id AND m.restaurant_id = r.id;");
-				$stmt->bind_param("s", $_SESSION['username']);
-				$stmt->execute();
-				$result = $stmt->get_result();
-				if ($result->num_rows == 0) {
-					echo "<h3>You don't have any item in your cart</h3>";	
-				}
-				else {
-				$row = $result->fetch_assoc();
-				$total_cost = 0;
-				$tax_cost = 0;
-				echo "<div><h3 style='display: inline-block;' id='restaurant_name'>Restaurant: ".$row['restaurant_name']."</h3><h3 style='display: inline-block;margin-left: 1%;'><a href='./menu.php?id=".$row['restaurant_id']."' style='text-decoration: none; color: blue;'>Continue Ordering</a></h3><button style='float:right;display: inline-block; width:auto;' onclick='checkout()'>Checkout</button><h3 style='float: right; display: inline-block; margin-right: 1%;' id='total_cost'></h3></div>";
-				echo "<div class='restaurant-list'>";
-				do {
-					$tax = $row['final_cost'] * $row['gst'] / 100;
-					$tax_cost += $tax;
-					$total_cost += $row['final_cost'];
+		<?php 
+		$stmt = $conn->prepare("SELECT c.id as id, c.menuitem_id as menuitem_id, c.quantity as quantity, c.final_cost as final_cost, m.name as menuitem_name, m.description as description, m.isVeg as isVeg, m.gst as gst, r.name as restaurant_name, r.id as restaurant_id, m.cost as cost FROM cart c, menuitem m, restaurant r, customer cu WHERE cu.username = ? AND cu.id = c.customer_id AND c.menuitem_id = m.id AND m.restaurant_id = r.id;");
+		$stmt->bind_param("s", $_SESSION['username']);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		if ($result->num_rows == 0) {
+			echo "<h3>You don't have any item in your cart</h3>";	
+		}
+		else {
+		$row = $result->fetch_assoc();
+		$total_cost = 0;
+		$tax_cost = 0;
+		echo "<div><h3 style='display: inline-block;' id='restaurant_name'>Restaurant: ".$row['restaurant_name']."</h3><h3 style='display: inline-block;margin-left: 1%;'><a href='./menu.php?id=".$row['restaurant_id']."' style='text-decoration: none; color: blue;'>Continue Ordering</a></h3><button style='float:right;display: inline-block; width:auto;' onclick='checkout()'>Checkout</button><h3 style='float: right; display: inline-block; margin-right: 1%;' id='total_cost'></h3></div>";
+		echo "<div class='restaurant-list'>";
+		do {
+			$tax = $row['final_cost'] * $row['gst'] / 100;
+			$tax_cost += $tax;
+			$total_cost += $row['final_cost'];
 
-				?>
-				<div class="restaurant-item">
-					<input type="hidden" class="id" value="<?php echo $row['id']; ?>">
-					<!-- <input type="hidden" class="cost" value="<?php echo $row['final_cost']; ?>"> -->
-					<p class="r-name"><?php if ($row['isVeg'] == 1){ echo "<span class='veg'></span>"; } else { echo "<span class='non-veg'></span>"; } echo ' '.$row['menuitem_name'];?></p>
-					<p class="r-description"><?php echo $row['description']; ?></p>
-					<p class="r-cost"><?php echo $row['final_cost']; ?></p>
-					
-					<form action="./cart_operations.php" class="cart-form" method="post">
-						<input type="hidden" name="method" value="edit">
-						<input type="hidden" name="name" value="<?php echo $row['menuitem_name']; ?>" class="name">
-						<input type="hidden" name="isVeg" value="<?php echo $row['isVeg']; ?>" class="isVeg">
-						<input type="hidden" name="description" value="<?php echo $row['description']; ?>" class="description">
-						<input type="hidden" name="final_cost" value="<?php echo $row['final_cost']; ?>" class="final_cost">
-						<input type="hidden" name="id" value="<?php echo $row['menuitem_id']; ?>">
-						<input type="hidden" name="cart_id" value="<?php echo $row['id']; ?>" class="id">
-						<input type="hidden" name="cost" value="<?php echo $row['cost']; ?>">
-						<input type="number" name="quantity" value="<?php echo $row['quantity']?>" class="quantity" min="1" max="10">
-						<button class="addbtn" type="submit">Edit Cart</button>
-						<button class="canbtn" type="button" onclick="deleteCart(this)">Remove</button>
-					</form>
-				</div>
-			<?php }while($row = $result->fetch_assoc()); 
-				echo "<script>document.getElementById('total_cost').innerHTML = 'Total Cost: '+".$total_cost."+' + '+".$tax_cost."+'(tax)';</script>";
-			}?>
-			</div>
+		?>
+		<!-- Cart Items -->
+		<div class="restaurant-item">
+			<input type="hidden" class="id" value="<?php echo $row['id']; ?>">
+			<p class="r-name"><?php if ($row['isVeg'] == 1){ echo "<span class='veg'></span>"; } else { echo "<span class='non-veg'></span>"; } echo ' '.$row['menuitem_name'];?></p>
+			<p class="r-description"><?php echo $row['description']; ?></p>
+			<p class="r-cost"><?php echo $row['final_cost']; ?></p>
+			
+			<form action="./cart_operations.php" class="cart-form" method="post">
+				<input type="hidden" name="method" value="edit">
+				<input type="hidden" name="name" value="<?php echo $row['menuitem_name']; ?>" class="name">
+				<input type="hidden" name="isVeg" value="<?php echo $row['isVeg']; ?>" class="isVeg">
+				<input type="hidden" name="description" value="<?php echo $row['description']; ?>" class="description">
+				<input type="hidden" name="final_cost" value="<?php echo $row['final_cost']; ?>" class="final_cost">
+				<input type="hidden" name="id" value="<?php echo $row['menuitem_id']; ?>">
+				<input type="hidden" name="cart_id" value="<?php echo $row['id']; ?>" class="id">
+				<input type="hidden" name="cost" value="<?php echo $row['cost']; ?>">
+				<input type="number" name="quantity" value="<?php echo $row['quantity']?>" class="quantity" min="1" max="10">
+				<button class="addbtn" type="submit">Edit Cart</button>
+				<button class="canbtn" type="button" onclick="deleteCart(this)">Remove</button>
+			</form>
+		</div>
+		<?php }while($row = $result->fetch_assoc()); 
+			echo "<script>document.getElementById('total_cost').innerHTML = 'Total Cost: '+".$total_cost."+' + '+".$tax_cost."+'(tax)';</script>";
+		}?>
+
+		<!-- Delete Form -->
 		<div id="delete_cart_form" class="modal">
-		<span onclick="document.getElementById('delete_cart_form').style.display='none'" class="close" title="Close Modal">&times;</span>
+			<span onclick="document.getElementById('delete_cart_form').style.display='none'" class="close" title="Close Modal">&times;</span>
 			<div class="modal-content">
 				<div class="container">
 					<div style="display: block;" class="tab-content">
@@ -72,7 +74,6 @@
 						<form method="post" action="./cart_operations.php" class="form-input">
 							<input type="hidden" class="id" name="id">
 							<input type="hidden" name="method" value="delete">
-							<!-- <input type="hidden" class="cost" value="<?php echo $row['final_cost']; ?>"> -->
 							<p class="r-name"></p>
 							<p class="r-description"></p>
 							<p class="r-cost"></p>
@@ -87,6 +88,8 @@
 				</div>
 			</div>
 		</div>
+
+		<!-- Checkout Form -->
 		<div id="order_form" class="modal">
 		<span onclick="document.getElementById('order_form').style.display='none'" class="close" title="Close Modal">&times;</span>
 			<div class="modal-content">
@@ -112,6 +115,7 @@
 	</main>
 
 	<script type="text/javascript">
+		// Delete Item
 		function deleteCart(ele) {
 			parent = ele.parentElement;
 			id = parent.getElementsByClassName('id')[0].value;
@@ -132,6 +136,7 @@
 			document.getElementById('delete_cart_form').style.display = "block";
 		}
 
+		// Checkout items to single Order
 		function checkout(){
 			form = document.getElementById('order_form').getElementsByClassName('form-input')[0];
 			restaurant = document.getElementById('restaurant_name').innerHTML;

@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	require './resource/config.php';
-
+	// Can be accessed only by restaurant or with a proper id in GET
 	if (isset($_GET['id'])) {
 		$id = $_GET['id'];
 		$stmt = $conn->prepare("SELECT * FROM restaurant WHERE id = ?") or trigger_error($conn->error, E_USER_ERROR);
@@ -47,6 +47,7 @@
 </head>
 </head>
 <body>
+	<!-- Adding Navbar -->
 	<?php $page='menu'; require './template/nav.php'; ?>
 	<main>
 		<h1><?php
@@ -56,8 +57,10 @@
 			<?php 
 				if ($self) {
 			?>
+			<!-- Adding Item (Restaurant only) -->
 			<button style="width: auto;" onclick="addItem()">Add Items</button>
 			<?php } ?>
+			<!-- List of menu items -->
 			<div class="restaurant-list">
 				<?php 
 				if (isset($_SESSION['username']) && $_SESSION['type'] == 'customer') {
@@ -67,6 +70,7 @@
 					$result = $stmt->get_result();
 					$row = $result->fetch_assoc();
 				}
+				// Sorting items if Veg
 				if (isset($row['isVeg']) && ($row['isVeg'] == 1)) {
 					$stmt = $conn->prepare("SELECT * FROM menuitem WHERE restaurant_id = ? ORDER BY isVeg DESC");
 					echo "<p style='margin: 0;'>Showing Veg items first as per your <a href='./customer/' style='text-decoration: none; color: blue;'>preference</a></p>";
@@ -79,6 +83,7 @@
 				$result = $stmt->get_result();
 				while($row = $result->fetch_assoc()) {
 				?>
+				<!-- Individual Menu item -->
 				<div class="restaurant-item">
 					<input type="hidden" class="id" value="<?php echo $row['id']; ?>">
 					<input type="hidden" class="name" value="<?php echo $row['name']; ?>">
@@ -92,6 +97,7 @@
 					<?php 
 					if ($self) {
 					?>
+					<!-- Options for Restaurant -->
 					<p class="r-menu"><button class="addbtn" onclick="editItem(this)">Edit Item</button><button class= "canbtn" style="float: right;" onclick="deleteItem(this)">Delete Item</button></p>
 					<?php
 					} else if (isset($_SESSION['username'])){
@@ -103,6 +109,7 @@
 						if ($result1->num_rows > 0) {
 							$row1 = $result1->fetch_assoc();
 						?>
+						<!-- Options for Customer -->
 							<p class="r-menu"><button onclick="selectItem(this)" class="item-select">Edit Cart</button></p>
 							<form action="./cart_operations.php" class="cart-form" style="display: none;" method="post">
 								<input type="hidden" name="method" value="edit">
@@ -119,6 +126,7 @@
 					<?php
 						} else {
 					?>
+					<!-- Add to cart option -->
 					<p class="r-menu"><button onclick="selectItem(this)" class="item-select">Order</button></p>
 					<form action="./cart_operations.php" class="cart-form" style="display: none;" method="post">
 						<input type="hidden" name="method" value="insert">
@@ -136,6 +144,7 @@
 						}
 					} else {
 					?>
+						<!-- Not loggined in Users -->
 						<button type="submit" onclick="document.getElementById('login_form').style.display='block'">Login to buy</button>
 					<?php
 					} 
@@ -145,6 +154,7 @@
 			<?php } ?>
 			</div>
 		</div>
+		<!-- When Item added from other Restaurant -->
 		<div id="delete_cart_form" class="modal">
 		<span onclick="document.getElementById('delete_cart_form').style.display='none'" class="close" title="Close Modal">&times;</span>
 			<div class="modal-content">
@@ -167,6 +177,7 @@
 		</div>
 		<?php 
 		if ($self) { ?>
+		<!-- Adding new menu item (Restaurant) -->
 		<div id="menu_item_form" class="modal">
 		<span onclick="document.getElementById('menu_item_form').style.display='none'" class="close" title="Close Modal">&times;</span>
 			<div class="modal-content">
@@ -234,6 +245,7 @@
 			}
 
 		?>
+		// Reusing Same form for add, edit & delete
 		function addItem() {
 			form = document.getElementById('menu_item_form');
 			inputs = form.getElementsByTagName('input');

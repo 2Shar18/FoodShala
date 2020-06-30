@@ -4,6 +4,7 @@
 	if (isset($_SESSION['username']) && $_SESSION['type'] == 'customer') {
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			switch ($_POST['method']) {
+				// When adding product to cart
 				case 'insert':
 					$quantity = $_POST['quantity'];
 					$menuitem_id = $_POST['id'];
@@ -43,6 +44,7 @@
 					$stmt->execute() or trigger_error($conn->error, E_USER_ERROR);
 					header("location: ./menu.php?id=".$_POST['restaurant_id']."&info=insert-done");
 					break;
+				// When Editing existing items
 				case 'edit':
 					$quantity = $_POST['quantity'];
 					$menuitem_id = $_POST['id'];
@@ -59,12 +61,14 @@
 						$stmt = $conn->prepare("UPDATE cart SET quantity = ?, final_cost = ? WHERE id = ?;");
 						$stmt->bind_param("idi", $quantity, $total_cost, $id);
 						$stmt->execute() or trigger_error($conn->error, E_USER_ERROR);
+						// redirecting to menu or cart
 						if (isset($_POST['restaurant_id']))
 							header("location: ./menu.php?id=".$_POST['restaurant_id']."&info=edit-done");
 						else
 							header("location: ./cart.php");
 					}
 					break;
+				// Deleting item from cart
 				case 'delete':
 					$id = $_POST['id'];
 					$stmt = $conn->prepare("DELETE FROM cart WHERE id = ?;");
@@ -72,6 +76,7 @@
 					$stmt->execute() or trigger_error($conn->error, E_USER_ERROR);
 					header("location: ./cart.php");
 					break;
+				// Sending cart to order
 				case 'order':
 					$comments = $_POST['comments'] or '';
 					$stmt = $conn->prepare("SELECT c.id as cart_id, cu.id as customer_id, c.menuitem_id, c.quantity, c.final_cost, m.gst as gst, r.id as restaurant_id FROM cart c, customer cu, restaurant r, menuitem m WHERE c.customer_id = cu.id AND cu.username = ? AND c.menuitem_id = m.id AND m.restaurant_id = r.id;");

@@ -4,6 +4,7 @@
 	if (isset($_SESSION['username']) && $_SESSION['type'] == 'restaurant') {
 		if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			switch ($_POST['method']) {
+				// When adding new item
 				case 'insert':
 					$restaurant_id = $_POST['res_id'];
 					$name = $_POST['name'];
@@ -16,6 +17,7 @@
 					$stmt = $conn->prepare("INSERT INTO menuitem VALUES(NULL, ?, ?, ?, ?, ?, ?);");
 					$stmt->bind_param("issidd", $restaurant_id, $name, $description, $isVeg, $cost, $gst);
 					break;
+				// When editing current item
 				case 'edit':
 					$restaurant_id = $_POST['res_id'];
 					$name = $_POST['name'];
@@ -29,6 +31,7 @@
 					$stmt = $conn->prepare("UPDATE menuitem SET name = ?, description = ?, isVeg = ?, cost = ?, gst = ? WHERE id = ?;");
 					$stmt->bind_param("ssiddi", $name, $description, $isVeg, $cost, $gst, $id);
 					break;
+				// When deleting the item
 				case 'delete':
 					$id = $_POST['id'];
 					$stmt = $conn->prepare("DELETE FROM menuitem WHERE id = ?;");
