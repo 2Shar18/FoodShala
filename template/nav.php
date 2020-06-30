@@ -2,6 +2,9 @@
  $_SESSION['usr'] = 'blank';
 ?>
 <!-- NavBar -->
+<head>
+    <title>FoodShala - <?php echo ucfirst($page); ?></title>
+</head>
 <header>
     <div class="navbar" id="topNav">
         <a href="/FoodShala/" id="home-tab">Home</a>
